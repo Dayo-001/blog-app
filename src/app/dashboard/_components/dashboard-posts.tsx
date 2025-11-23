@@ -1,0 +1,126 @@
+import Link from "next/link";
+import { prisma } from "@/src/lib/prisma";
+import { Button } from "@/components/ui/button";
+
+export default async function DashboardPosts({ userId }: { userId: string }) {
+  const posts = await prisma.post.findMany({
+    where: { authorId: userId },
+    orderBy: { createdAt: "desc" },
+    include: { tags: true, author: { select: { name: true, image: true } } },
+  });
+
+  return (
+    <div className="max-w-4xl mx-auto py-12">
+      <div className="flex justify-between items-center mb-10">
+        <h1 className="text-4xl font-extrabold text-gray-900">Your Posts</h1>
+        <Link
+          href="/dashboard/new"
+          className="px-5 py-2 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition"
+        >
+          + New Post
+        </Link>
+      </div>
+
+      {posts.length === 0 && (
+        <div className="flex flex-col items-center justify-center py-20 text-gray-400">
+          <span className="text-2xl mb-2">📝</span>
+          <p className="italic">You haven’t written any posts yet.</p>
+        </div>
+      )}
+
+      <div className="space-y-6">
+        {posts.map((post) => (
+          <PostRow key={post.id} post={post} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PostRow({ post }: any) {
+  return (
+    <div className="border border-gray-200 bg-white rounded-2xl shadow p-6 flex items-center gap-6 hover:shadow-md transition">
+      <div className="shrink-0">
+        <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xl overflow-hidden">
+          {post.author?.image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={post.author.image}
+              alt={post.author.name ?? "Author"}
+              className="w-12 h-12 object-cover rounded-full"
+            />
+          ) : post.author?.name ? (
+            post.author.name[0].toUpperCase()
+          ) : (
+            "A"
+          )}
+        </div>
+      </div>
+
+      <div className="flex-1 min-w-0">
+        <h2 className="text-xl font-bold text-gray-900 wrap-break-words">
+          {post.title}
+        </h2>
+        <p className="text-gray-400 text-sm mb-2 break-all">/{post.slug}</p>
+        <div className="flex items-center gap-2 mb-2">
+          <span
+            className={
+              post.published
+                ? "inline-block px-2 py-0.5 text-xs rounded-full bg-green-100 text-green-700 font-semibold"
+                : "inline-block px-2 py-0.5 text-xs rounded-full bg-red-100 text-red-700 font-semibold"
+            }
+          >
+            {post.published ? "Published" : "Draft"}
+          </span>
+          {post.tags?.length > 0 && (
+            <div className="flex gap-1 flex-wrap">
+              {post.tags.map((tag: any) => (
+                <span
+                  key={tag.id || tag}
+                  className="text-xs bg-gray-100 px-2 py-1 rounded-full border border-gray-200 text-gray-600"
+                >
+                  #{tag.name || tag}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-col sm:flex-row gap-2">
+        <Link
+          href={`/dashboard/${post.slug}/edit`}
+          className="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 font-medium transition"
+        >
+          Edit
+        </Link>
+        <Link
+          href={`/post/${post.slug}`}
+          className="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 font-medium transition"
+        >
+          View
+        </Link>
+        <form action={`/api/posts/${post.id}/delete`} method="post">
+          <Button
+            type="submit"
+            className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 font-medium transition"
+          >
+            Delete
+          </Button>
+        </form>
+        <form action={`/api/posts/${post.id}/toggle`} method="post">
+          <Button
+            type="submit"
+            className={`px-3 py-1 rounded font-medium transition ${
+              post.published
+                ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
+                : "bg-blue-600 text-white hover:bg-blue-700"
+            }`}
+          >
+            {post.published ? "Unpublish" : "Publish"}
+          </Button>
+        </form>
+      </div>
+    </div>
+  );
+}

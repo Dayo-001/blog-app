@@ -1,0 +1,33 @@
+import { prisma } from "@/src/lib/prisma";
+import { auth } from "@/src/lib/auth";
+import { NextResponse } from "next/server";
+
+type Params = {
+  id: string;
+};
+type RouteContext = {
+  params: Params;
+};
+
+export async function POST(request: Request, { params }: RouteContext) {
+  const session = await auth.api.getSession({ headers: request.headers });
+
+  if (!session?.user)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+  const { id } = await params;
+  const post = await prisma.post.findUnique({
+    where: { id },
+  });
+
+  if (!post || post.authorId !== session.user.id) {
+    return NextResponse.json({ error: "Not allowed" }, { status: 403 });
+  }
+
+  await prisma.post.update({
+    where: { id },
+    data: { published: !post.published },
+  });
+
+  return NextResponse.redirect(new URL("/dashboard", request.url));
+}
