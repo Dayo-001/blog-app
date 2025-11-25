@@ -1,8 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/src/lib/prisma";
 import { auth } from "@/src/lib/auth";
 
-export const GET = async (request: Request, { params }: any) => {
+export const GET = async (request: NextRequest, { params }: any) => {
   const session = await auth.api.getSession({ headers: request.headers });
   const { id: postId } = await params;
   if (!session?.user) return NextResponse.json({ liked: false });

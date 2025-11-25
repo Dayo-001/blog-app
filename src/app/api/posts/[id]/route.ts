@@ -1,10 +1,10 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/src/lib/prisma";
 import { auth } from "@/src/lib/auth";
 import { PostCreateSchema } from "@/src/lib/use-create-post-validator";
 import { parseTags } from "@/src/lib/use-create-tag";
 
-export async function PATCH(request: Request, { params }: any) {
+export async function PATCH(request: NextRequest, { params }: any) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
