@@ -3,14 +3,17 @@ import { prisma } from "@/src/lib/prisma";
 import { auth } from "@/src/lib/auth";
 import { CommentSchema } from "@/src/lib/use-create-post-validator";
 
-type Params = {
-  id: string;
-};
-type RouteContext = {
-  params: Params;
-};
+// type Params = {
+//   id: string;
+// };
+// type RouteContext = {
+//   params: Params;
+// };
 
-export async function POST(request: NextRequest, { params }: RouteContext) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

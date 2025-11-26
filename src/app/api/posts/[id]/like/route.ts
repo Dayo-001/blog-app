@@ -2,14 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/src/lib/prisma";
 import { auth } from "@/src/lib/auth";
 
-export async function POST(request: NextRequest, { params }: any) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { id: postId } = await params;
   try {
-    // create like if not exists
     await prisma.like.create({
       data: {
         postId,
@@ -19,7 +21,6 @@ export async function POST(request: NextRequest, { params }: any) {
     const count = await prisma.like.count({ where: { postId } });
     return NextResponse.json({ liked: true, count });
   } catch (err: any) {
-    // if unique constraint fails (already liked), respond accordingly
     if (err?.code === "P2002" || err?.meta?.target?.includes("postId_userId")) {
       return NextResponse.json({ error: "Already liked" }, { status: 400 });
     }
