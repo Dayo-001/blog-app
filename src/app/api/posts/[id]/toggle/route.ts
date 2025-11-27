@@ -1,15 +1,18 @@
 import { prisma } from "@/src/lib/prisma";
 import { auth } from "@/src/lib/auth";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-type Params = {
-  id: string;
-};
-type RouteContext = {
-  params: Params;
-};
+// type Params = {
+//   id: string;
+// };
+// type RouteContext = {
+//   params: Params;
+// };
 
-export async function POST(request: Request, { params }: RouteContext) {
+export async function POST(
+  request: NextRequest,
+  { params }: { params: { id: string } }
+) {
   const session = await auth.api.getSession({ headers: request.headers });
 
   if (!session?.user)
