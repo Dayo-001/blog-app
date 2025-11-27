@@ -3,9 +3,15 @@ import { prisma } from "@/src/lib/prisma";
 import { notFound } from "next/navigation";
 import LikeButton from "./likeButton";
 import Comments from "./comments";
+import { authClient } from "@/src/lib/auth-client";
+import { headers } from "next/headers";
 
 const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
+  const requestHeaders = await headers();
+  const session = await authClient.getSession({
+    fetchOptions: { headers: requestHeaders },
+  });
   const post = await prisma.post.findUnique({
     where: { slug },
     include: {
@@ -67,7 +73,11 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
         <LikeButton postId={post.id} initialLikes={post.likes.length} />
       </div>
 
-      <Comments postId={post.id} existingComments={post.comments} />
+      <Comments
+        postId={post.id}
+        existingComments={post.comments}
+        currentUserId={session.data?.user.id}
+      />
     </div>
   );
 };

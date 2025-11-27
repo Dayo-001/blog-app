@@ -18,9 +18,11 @@ import { useForm } from "react-hook-form";
 const Comments = ({
   postId,
   existingComments,
+  currentUserId,
 }: {
   postId: string;
   existingComments: any[];
+  currentUserId?: string;
 }) => {
   const form = useForm<CommentCreateInput>({
     resolver: zodResolver(CommentSchema),
@@ -47,6 +49,15 @@ const Comments = ({
     setComments([data.comment, ...comments]); // add new comment
     form.reset(); // clear input
     setError("");
+  };
+
+  const deleteComment = async (commentId: string) => {
+    const result = await fetch(`/api/comments/${commentId}`, {
+      method: "DELETE",
+    });
+    if (result.ok) {
+      setComments(comments.filter((c) => c.id !== commentId));
+    }
   };
 
   return (
@@ -80,15 +91,24 @@ const Comments = ({
 
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <span className="font-semibold text-gray-800">
+                <div className="font-semibold text-gray-800">
                   {comment.author?.name ?? "Anonymous"}
-                </span>
-                <span className="text-xs text-gray-400">
+                </div>
+                <div className="text-xs text-gray-400">
                   {new Date(comment.createdAt).toLocaleDateString()}
-                </span>
+                </div>
               </div>
               <p className="text-gray-700">{comment.content}</p>
             </div>
+            {currentUserId && comment.author?.id === currentUserId && (
+              <Button
+                onClick={() => deleteComment(comment.id)}
+                className="ml-2 text-xs text-white bg-red-500 hover:underline hover:cursor-pointer hover:bg-red-600"
+                title="Delete comment"
+              >
+                Delete
+              </Button>
+            )}
           </div>
         ))}
       </div>
