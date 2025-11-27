@@ -6,7 +6,7 @@ import { parseTags } from "@/src/lib/use-create-tag";
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user)
@@ -53,12 +53,15 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(request: Request, { params }: any) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const id = params.id;
+  const { id } = await params;
   const post = await prisma.post.findUnique({ where: { id } });
   if (!post || post.authorId !== session.user.id) {
     return NextResponse.json({ error: "Forbidden" }, { status: 403 });
