@@ -15,13 +15,24 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 
+type Comment = {
+  id: string;
+  content: string;
+  createdAt: string | Date;
+  author: {
+    id: string;
+    name?: string;
+    image?: string;
+  } | null;
+};
+
 const Comments = ({
   postId,
   existingComments,
   currentUserId,
 }: {
   postId: string;
-  existingComments: any[];
+  existingComments: Comment[];
   currentUserId?: string;
 }) => {
   const form = useForm<CommentCreateInput>({

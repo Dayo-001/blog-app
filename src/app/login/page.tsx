@@ -1,12 +1,12 @@
-import React from "react";
+import React, { Suspense } from "react";
 import AuthCard from "../auth/AuthCard";
 
-type Props = {};
-
-const LoginPage = (props: Props) => {
+const LoginPage = () => {
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <AuthCard />
+      <Suspense fallback={<div>Loading...</div>}>
+        <AuthCard />
+      </Suspense>
     </div>
   );
 };

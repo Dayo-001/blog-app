@@ -19,7 +19,29 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 
+type Post = {
+  id: string;
+  title: string;
+  slug: string;
+  content: string;
+  published: boolean;
+  authorId: string;
+  tags: Tag[];
+};
+
+type Tag = {
+  id: string;
+  name: string;
+};
+
 const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
+  const { slug } = use(params);
+  const { user } = useSession();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [post, setPost] = useState<Post | null>(null);
+  const [error, setError] = useState("");
+
   //   console.log("params in EditPostPage:", params);
   const form = useForm<PostCreateInput>({
     resolver: zodResolver(PostCreateSchema),
@@ -34,12 +56,6 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
   useEffect(() => {
     form.setFocus("title");
   }, [form]);
-  const { slug } = use(params);
-  const { user } = useSession();
-  const router = useRouter();
-  const [loading, setLoading] = useState(true);
-  const [post, setPost] = useState<any>(null);
-  const [error, setError] = useState("");
 
   useEffect(() => {
     async function load() {
@@ -51,16 +67,23 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
       }
       const data = await result.json();
       setPost(data.post);
+      form.reset({
+        title: data.post.title,
+        slug: data.post.slug,
+        content: data.post.content,
+        published: data.post.published,
+        tags: data.post.tags?.map((t: Tag) => t.name).join(","),
+      });
       setLoading(false);
     }
     load();
-  }, [slug]);
+  }, [slug, form]);
 
   if (!user)
     return <p className="p-4">You must be logged in to edit this post</p>;
   if (loading) return <p className="p-4">Loading...</p>;
   if (!post) return <p className="p-4">Post not found</p>;
-  if (post.authorId !== user.id)
+  if (post && user && post.authorId !== user.id)
     return <p className="p-4">You are not authorized to edit this post</p>;
 
   const handleSubmit = async (values: PostCreateInput) => {
@@ -71,7 +94,7 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
       slug: values.slug,
       content: values.content,
       published: values.published?.valueOf(),
-      tags: values.tags, // comma separated
+      tags: values.tags,
     };
 
     const result = await fetch(`/api/posts/${post.id}`, {
@@ -107,7 +130,6 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
               <FormItem className="mb-3 w-full">
                 <FormControl>
                   <Input
-                    defaultValue={post.title}
                     placeholder="Title"
                     {...field}
                     className="border w-full p-2 rounded"
@@ -126,7 +148,6 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
               <FormItem className="mb-3 w-full">
                 <FormControl>
                   <Input
-                    defaultValue={post.slug}
                     placeholder="slug-for-url (lowercase-dashes)"
                     {...field}
                     className="border w-full p-2 rounded"
@@ -146,7 +167,6 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
               <FormItem className="mb-3 w-full">
                 <FormControl>
                   <Textarea
-                    defaultValue={post.content}
                     placeholder="Write your post..."
                     {...field}
                     className="border w-full p-2 rounded"
@@ -165,7 +185,6 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
               <FormItem className="mb-3 w-full">
                 <FormControl>
                   <Input
-                    defaultValue={post.tags?.map((t: any) => t.name).join(",")}
                     placeholder="tags (comma separated) e.g technology, service"
                     {...field}
                     className="border w-full p-2 rounded"
@@ -185,7 +204,6 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
                 <FormControl>
                   <div>
                     <Checkbox
-                      defaultChecked={post.published}
                       checked={field.value}
                       onCheckedChange={field.onChange}
                     />
