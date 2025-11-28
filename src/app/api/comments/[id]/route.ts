@@ -4,7 +4,7 @@ import { auth } from "@/src/lib/auth";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user)

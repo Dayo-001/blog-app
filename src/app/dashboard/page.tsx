@@ -11,7 +11,7 @@ const DashboardPage = async () => {
       headers: requestHeaders,
     },
   });
-  console.log(session);
+  //   console.log(session);
   if (!session.data?.user) {
     redirect("/login?callbackUrl=/dashboard");
   }

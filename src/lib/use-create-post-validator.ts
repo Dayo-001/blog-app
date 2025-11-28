@@ -11,7 +11,7 @@ export const PostCreateSchema = z.object({
     ),
   content: z.string().min(10, "Content is too short"),
   published: z.boolean().optional(),
-  tags: z.string().optional(), // comma separated
+  tags: z.string().optional(),
 });
 
 export type PostCreateInput = z.infer<typeof PostCreateSchema>;

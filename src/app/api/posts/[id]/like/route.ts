@@ -4,7 +4,7 @@ import { auth } from "@/src/lib/auth";
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user)
@@ -29,12 +29,15 @@ export async function POST(
   }
 }
 
-export async function DELETE(request: Request, { params }: any) {
+export async function DELETE(
+  request: Request,
+  { params }: { params: Promise<{ id: string }> }
+) {
   const session = await auth.api.getSession({ headers: request.headers });
   if (!session?.user)
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-  const postId = params.id;
+  const { id: postId } = await params;
   await prisma.like.deleteMany({ where: { postId, userId: session.user.id } });
   const count = await prisma.like.count({ where: { postId } });
   return NextResponse.json({ liked: false, count });

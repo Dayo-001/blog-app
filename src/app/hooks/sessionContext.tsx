@@ -4,7 +4,22 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { authClient, signOut } from "@/src/lib/auth-client";
 import { useRouter } from "next/navigation";
 
-const SessionContext = createContext({
+export type UserSession = {
+  id: string;
+  name?: string;
+  email?: string;
+  image?: string;
+};
+
+export interface SessionContextType {
+  error: string | null;
+  user: UserSession | null;
+  loading: boolean;
+  refresh: () => Promise<void>;
+  logout: () => Promise<void>;
+}
+
+const SessionContext = createContext<SessionContextType>({
   error: null,
   user: null,
   loading: true,
@@ -13,16 +28,20 @@ const SessionContext = createContext({
 });
 
 export function SessionProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<UserSession | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   async function fetchSession() {
     try {
       const res = await authClient.getSession();
       if (res.data) {
-        setUser(res.data.user ?? null);
+        setUser(
+          res.data.user
+            ? { ...res.data.user, image: res.data.user.image ?? undefined }
+            : null
+        );
       } else {
         setUser(null);
       }
