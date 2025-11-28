@@ -9,6 +9,10 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: "postgresql", // or "mysql", "postgresql", ...etc
   }),
+  allowedOrigins: [
+    "http://localhost:3000", // dev
+    "https://blog-app-bootcamp.vercel.app", // production
+  ],
   emailAndPassword: {
     enabled: true,
     autoSignIn: false,
