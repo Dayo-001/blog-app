@@ -30,9 +30,9 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
     return notFound();
   }
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-6 rounded-2xl bg-white shadow-lg">
-      <div className="mb-6 flex items-center gap-4">
-        <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-2xl overflow-hidden">
+    <div className="max-w-3xl mx-auto mt-6 sm:mt-10 p-4 sm:p-6 rounded-2xl bg-white shadow-lg">
+      <div className="mb-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+        <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-2xl sm:text-3xl overflow-hidden">
           {post.author?.image ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -46,15 +46,15 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
             "A"
           )}
         </div>
-        <div>
-          <div className="font-semibold text-lg text-gray-800">
+        <div className="flex flex-col items-center sm:items-start">
+          <div className="font-semibold text-lg sm:text-xl text-gray-800">
             {post.author?.name ?? "Unknown"}
           </div>
           <div className="text-sm text-gray-400">
             {new Date(post.createdAt).toLocaleDateString()}
           </div>
         </div>
-        <div className="ml-auto flex gap-2">
+        <div className="flex flex-wrap gap-2 sm:ml-auto">
           {post.tags.map((tag) => (
             <span
               key={tag.id}
@@ -65,9 +65,11 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
           ))}
         </div>
       </div>
-      <h1 className="text-4xl font-bold mb-4 text-gray-900">{post.title}</h1>
+      <h1 className="text-2xl sm:text-4xl font-bold mb-4 text-gray-900 text-center sm:text-left">
+        {post.title}
+      </h1>
 
-      <p className="prose prose-lg mb-8 max-w-none text-gray-800">
+      <p className="prose prose-lg mb-8 max-w-none text-gray-800 break-words">
         {post.content}
       </p>
       <div className="mb-10">
