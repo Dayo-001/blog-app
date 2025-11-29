@@ -100,8 +100,8 @@ const AuthForm = () => {
   };
 
   return (
-    <div>
-      <Card className="bg-neutral-100 w-96">
+    <div className="min-h-screen flex items-center justify-center px-2 py-8">
+      <Card className="w-full max-w-xs sm:max-w-md md:max-w-lg bg-neutral-100 shadow-lg">
         <CardHeader>
           <CardTitle>Create an account</CardTitle>
           <CardDescription>
@@ -196,7 +196,6 @@ const AuthForm = () => {
                 }
                 type="submit"
                 className="hover:cursor-pointer w-full"
-                // size="lg"
               >
                 {loading ? (
                   <Spinner className="animate-spin" />
@@ -213,7 +212,7 @@ const AuthForm = () => {
           </FieldDescription>
         </CardFooter>
       </Card>
-      {error && <div className="text-red-500 mt-2">{error}</div>}
+      {error && <div className="text-red-500 mt-2 text-center">{error}</div>}
     </div>
   );
 };

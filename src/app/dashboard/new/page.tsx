@@ -70,8 +70,8 @@ export default function NewPostPage() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Create New Post</h1>
+    <div className="max-w-3xl w-full mx-auto p-4 sm:p-6 bg-white rounded-lg shadow mt-4 mb-8">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Create New Post</h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <FormField
@@ -83,11 +83,10 @@ export default function NewPostPage() {
                   <Input
                     placeholder="Title"
                     {...field}
-                    className="border w-full p-2 rounded"
+                    className="border w-full p-2 rounded text-base"
                     type="text"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -101,11 +100,10 @@ export default function NewPostPage() {
                   <Input
                     placeholder="slug-for-url (lowercase-dashes)"
                     {...field}
-                    className="border w-full p-2 rounded"
+                    className="border w-full p-2 rounded text-base"
                     type="text"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -120,11 +118,10 @@ export default function NewPostPage() {
                   <Textarea
                     placeholder="Write your post..."
                     {...field}
-                    className="border w-full p-2 rounded"
+                    className="border w-full p-2 rounded text-base min-h-[180px] sm:min-h-[240px]"
                     rows={10}
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -138,11 +135,10 @@ export default function NewPostPage() {
                   <Input
                     placeholder="tags (comma separated) e.g technology, service"
                     {...field}
-                    className="border w-full p-2 rounded"
+                    className="border w-full p-2 rounded text-base"
                     type="text"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -153,7 +149,7 @@ export default function NewPostPage() {
             render={({ field }) => (
               <FormItem className="mb-3 w-full">
                 <FormControl>
-                  <div>
+                  <div className="flex items-center gap-2">
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
@@ -161,22 +157,21 @@ export default function NewPostPage() {
                     <Label>Publish now</Label>
                   </div>
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <div>
-            <Button className="bg-blue-600 text-white px-4 py-2 rounded">
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Button className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto">
               Create
             </Button>
           </div>
         </form>
       </Form>
 
-      {message && <p className="text-green-600 mt-3">{message}</p>}
-      {error && <p className="text-red-600 mt-3">{error}</p>}
+      {message && <p className="text-green-600 mt-3 text-center">{message}</p>}
+      {error && <p className="text-red-600 mt-3 text-center">{error}</p>}
     </div>
   );
 }

@@ -83,9 +83,9 @@ const Comments = ({
         {comments.map((comment) => (
           <div
             key={comment.id}
-            className="flex items-start gap-4 bg-white border border-gray-200 rounded-xl shadow-sm p-4"
+            className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 bg-white border border-gray-200 rounded-xl shadow-sm p-3 sm:p-4"
           >
-            <div className="shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg overflow-hidden">
+            <div className="shrink-0 w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-lg overflow-hidden mb-2 sm:mb-0">
               {comment.author?.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img
@@ -100,8 +100,8 @@ const Comments = ({
               )}
             </div>
 
-            <div className="flex-1">
-              <div className="flex items-center gap-2 mb-1">
+            <div className="flex-1 w-full">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-1 sm:gap-2 mb-1">
                 <div className="font-semibold text-gray-800">
                   {comment.author?.name ?? "Anonymous"}
                 </div>
@@ -109,12 +109,12 @@ const Comments = ({
                   {new Date(comment.createdAt).toLocaleDateString()}
                 </div>
               </div>
-              <p className="text-gray-700">{comment.content}</p>
+              <p className="text-gray-700 break-words">{comment.content}</p>
             </div>
             {currentUserId && comment.author?.id === currentUserId && (
               <Button
                 onClick={() => deleteComment(comment.id)}
-                className="ml-2 text-xs text-white bg-red-500 hover:underline hover:cursor-pointer hover:bg-red-600"
+                className="mt-2 sm:mt-0 sm:ml-2 text-xs text-white bg-red-500 hover:underline hover:cursor-pointer hover:bg-red-600"
                 title="Delete comment"
               >
                 Delete
@@ -126,7 +126,7 @@ const Comments = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(submitComment)}
-          className="bg-gray-50 border border-gray-200 rounded-xl p-6 shadow space-y-4"
+          className="bg-gray-50 border border-gray-200 rounded-xl p-4 sm:p-6 shadow space-y-4"
         >
           <FormField
             control={form.control}
@@ -135,10 +135,10 @@ const Comments = ({
               <FormItem>
                 <FormControl>
                   <Textarea
-                    rows={5}
+                    rows={4}
                     placeholder="Write a comment..."
                     {...field}
-                    className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-200 transition"
+                    className="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-200 transition text-base"
                     required
                   />
                 </FormControl>
@@ -148,7 +148,7 @@ const Comments = ({
           />
           <Button
             type="submit"
-            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-full shadow transition-all duration-150 active:scale-95 hover:cursor-pointer"
+            className="mt-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-full shadow transition-all duration-150 active:scale-95 hover:cursor-pointer w-full sm:w-auto"
           >
             Post Comment
           </Button>

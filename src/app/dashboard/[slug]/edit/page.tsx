@@ -42,7 +42,6 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
   const [post, setPost] = useState<Post | null>(null);
   const [error, setError] = useState("");
 
-  //   console.log("params in EditPostPage:", params);
   const form = useForm<PostCreateInput>({
     resolver: zodResolver(PostCreateSchema),
     defaultValues: {
@@ -53,13 +52,14 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
       tags: "",
     },
   });
+
   useEffect(() => {
     form.setFocus("title");
   }, [form]);
 
   useEffect(() => {
     async function load() {
-      const result = await fetch(`/api/posts/slug/${slug}`); // we will create this GET route below
+      const result = await fetch(`/api/posts/slug/${slug}`);
       if (!result.ok) {
         setError("Could not load post");
         setLoading(false);
@@ -119,8 +119,10 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-4">Edit Post</h1>
+    <div className="max-w-3xl w-full mx-auto p-4 sm:p-6 bg-white rounded-lg shadow mt-4 mb-8">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">
+        Edit Post
+      </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <FormField
@@ -132,11 +134,10 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
                   <Input
                     placeholder="Title"
                     {...field}
-                    className="border w-full p-2 rounded"
+                    className="border w-full p-2 rounded text-base"
                     type="text"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -150,11 +151,10 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
                   <Input
                     placeholder="slug-for-url (lowercase-dashes)"
                     {...field}
-                    className="border w-full p-2 rounded"
+                    className="border w-full p-2 rounded text-base"
                     type="text"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -169,11 +169,10 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
                   <Textarea
                     placeholder="Write your post..."
                     {...field}
-                    className="border w-full p-2 rounded"
+                    className="border w-full p-2 rounded text-base min-h-[180px] sm:min-h-60"
                     rows={10}
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -187,11 +186,10 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
                   <Input
                     placeholder="tags (comma separated) e.g technology, service"
                     {...field}
-                    className="border w-full p-2 rounded"
+                    className="border w-full p-2 rounded text-base"
                     type="text"
                   />
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
@@ -202,7 +200,7 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
             render={({ field }) => (
               <FormItem className="mb-3 w-full">
                 <FormControl>
-                  <div>
+                  <div className="flex items-center gap-2">
                     <Checkbox
                       checked={field.value}
                       onCheckedChange={field.onChange}
@@ -210,15 +208,14 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
                     <Label>Publish now</Label>
                   </div>
                 </FormControl>
-
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <div className="flex space-x-3">
+          <div className="flex flex-col sm:flex-row gap-3">
             <Button
-              className="bg-green-600 text-white px-4 py-2 rounded"
+              className="bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto"
               type="submit"
             >
               Save
@@ -226,14 +223,14 @@ const EditPostPage = ({ params }: { params: Promise<{ slug: string }> }) => {
             <Button
               type="button"
               onClick={handleDelete}
-              className="bg-red-600 text-white px-4 py-2 rounded"
+              className="bg-red-600 text-white px-4 py-2 rounded w-full sm:w-auto"
             >
               Delete
             </Button>
           </div>
         </form>
       </Form>
-      {error && <p className="text-red-600 mt-3">{error}</p>}
+      {error && <p className="text-red-600 mt-3 text-center">{error}</p>}
     </div>
   );
 };
