@@ -60,7 +60,7 @@ const PostCard = ({ title, slug, content, tags, likes, author }: Props) => {
           <span role="img" aria-label="likes">
             ❤️
           </span>{" "}
-          {likes} likes
+          {likes}
         </div>
       </div>
     </div>
