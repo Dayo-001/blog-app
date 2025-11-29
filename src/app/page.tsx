@@ -1,8 +1,8 @@
+export const dynamic = "force-dynamic";
 import { prisma } from "@/src/lib/prisma";
 import SearchClient from "../components/desktop/SearchClient";
 
 const HomePage = async () => {
-  // Fetch ONLY published posts
   const posts = await prisma.post.findMany({
     where: { published: true },
     include: {
