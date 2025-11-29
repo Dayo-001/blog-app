@@ -21,4 +21,4 @@ export const {
   revokeSession,
   revokeOtherSessions,
   revokeSessions,
-} = createAuthClient();
+} = authClient;
