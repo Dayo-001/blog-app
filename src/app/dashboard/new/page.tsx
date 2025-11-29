@@ -71,7 +71,9 @@ export default function NewPostPage() {
 
   return (
     <div className="max-w-3xl w-full mx-auto p-4 sm:p-6 bg-white rounded-lg shadow mt-4 mb-8">
-      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">Create New Post</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 text-center">
+        Create New Post
+      </h1>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
           <FormField
@@ -118,7 +120,7 @@ export default function NewPostPage() {
                   <Textarea
                     placeholder="Write your post..."
                     {...field}
-                    className="border w-full p-2 rounded text-base min-h-[180px] sm:min-h-[240px]"
+                    className="border w-full p-2 rounded text-base min-h-[180px] sm:min-h-60"
                     rows={10}
                   />
                 </FormControl>
