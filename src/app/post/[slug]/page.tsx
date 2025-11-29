@@ -69,7 +69,7 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
         {post.title}
       </h1>
 
-      <p className="prose prose-lg mb-8 max-w-none text-gray-800 break-words">
+      <p className="prose prose-lg mb-8 max-w-none text-gray-800 wrap-break-word">
         {post.content}
       </p>
       <div className="mb-10">

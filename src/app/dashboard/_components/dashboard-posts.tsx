@@ -26,7 +26,9 @@ export default async function DashboardPosts({ userId }: { userId: string }) {
       {posts.length === 0 && (
         <div className="flex flex-col items-center justify-center py-16 sm:py-20 text-gray-400">
           <span className="text-2xl mb-2">📝</span>
-          <p className="italic text-center">You haven’t written any posts yet.</p>
+          <p className="italic text-center">
+            You haven’t written any posts yet.
+          </p>
         </div>
       )}
 
@@ -60,10 +62,12 @@ function PostRow({ post }: any) {
       </div>
 
       <div className="flex-1 min-w-0 w-full">
-        <h2 className="text-lg sm:text-xl font-bold text-gray-900 break-words">
+        <h2 className="text-lg sm:text-xl font-bold text-gray-900 wrap-break-word">
           {post.title}
         </h2>
-        <p className="text-gray-400 text-xs sm:text-sm mb-2 break-all">/{post.slug}</p>
+        <p className="text-gray-400 text-xs sm:text-sm mb-2 break-all">
+          /{post.slug}
+        </p>
         <div className="flex flex-wrap items-center gap-2 mb-2">
           <span
             className={
@@ -102,7 +106,11 @@ function PostRow({ post }: any) {
         >
           View
         </Link>
-        <form action={`/api/posts/${post.id}/delete`} method="post" className="w-full sm:w-auto">
+        <form
+          action={`/api/posts/${post.id}/delete`}
+          method="post"
+          className="w-full sm:w-auto"
+        >
           <Button
             type="submit"
             className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 font-medium transition w-full sm:w-auto"
@@ -110,7 +118,11 @@ function PostRow({ post }: any) {
             Delete
           </Button>
         </form>
-        <form action={`/api/posts/${post.id}/toggle`} method="post" className="w-full sm:w-auto">
+        <form
+          action={`/api/posts/${post.id}/toggle`}
+          method="post"
+          className="w-full sm:w-auto"
+        >
           <Button
             type="submit"
             className={`px-3 py-1 rounded font-medium transition w-full sm:w-auto ${

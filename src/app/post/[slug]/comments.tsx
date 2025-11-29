@@ -109,7 +109,7 @@ const Comments = ({
                   {new Date(comment.createdAt).toLocaleDateString()}
                 </div>
               </div>
-              <p className="text-gray-700 break-words">{comment.content}</p>
+              <p className="text-gray-700 wrap-break-word">{comment.content}</p>
             </div>
             {currentUserId && comment.author?.id === currentUserId && (
               <Button
