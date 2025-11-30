@@ -32,6 +32,8 @@ import * as z from "zod";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useSession } from "@/src/app/hooks/sessionContext";
 
 const AuthFormSchema = z.object({
   email: z.email({
@@ -46,12 +48,20 @@ const AuthFormSchema = z.object({
 
 const AuthCard = () => {
   const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
+  const { user, loading: sessionLoading } = useSession();
+
+  useEffect(() => {
+    if (!sessionLoading && user) {
+      router.replace("/dashboard");
+    }
+  }, [user, sessionLoading, router]);
+
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
-  // const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
   const [error, setError] = useState("");
@@ -72,8 +82,8 @@ const AuthCard = () => {
     console.log(values);
     try {
       const result = await signIn.email({
-        email: values.email, // required
-        password: values.password, // required
+        email: values.email,
+        password: values.password,
         rememberMe: false,
         callbackURL: callbackUrl,
       });
@@ -181,12 +191,10 @@ const AuthCard = () => {
                     <FormControl>
                       <div
                         className={cn(
-                          "relative flex file:text-foreground placeholder:text-muted-foreground selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 rounded-md border bg-transparent px-3 py-1 text-base shadow-xs transition-[color,box-shadow] outline-none file:inline-flex file:h-7 file:border-0 file:bg-transparent file:text-sm file:font-medium disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-                          "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
-                          "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive"
+                          "relative flex rounded-md border border-black"
                         )}
                       >
-                        <input
+                        <Input
                           placeholder="password..."
                           {...field}
                           className="outline-none"
