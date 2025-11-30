@@ -25,6 +25,9 @@ import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { FieldDescription } from "@/components/ui/field";
 import { Spinner } from "@/components/ui/spinner";
+import { useSession } from "../hooks/sessionContext";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { cn } from "@/lib/utils";
 
 const strongPasswordRegex = new RegExp(
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/
@@ -57,14 +60,25 @@ const AuthFormSchema = z
   });
 
 const AuthForm = () => {
+  const sessionRouter = useRouter();
+  const { user, loading: sessionLoading } = useSession();
+
+  useEffect(() => {
+    if (!sessionLoading && user) {
+      sessionRouter.replace("/dashboard");
+    }
+  }, [user, sessionLoading, sessionRouter]);
+
   const inputRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof AuthFormSchema>>({
     resolver: zodResolver(AuthFormSchema),
@@ -97,6 +111,13 @@ const AuthForm = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const togglePasswordVisibilityOnMouseDown = () => {
+    setShowPassword(true);
+  };
+  const togglePasswordVisibilityOnMouseUp = () => {
+    setShowPassword(false);
   };
 
   return (
@@ -157,14 +178,37 @@ const AuthForm = () => {
                   <FormItem className="mb-3 w-full">
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="strong password..."
-                        {...field}
-                        className="border border-gray-700"
-                        type="password"
-                      />
+                      <div
+                        className={cn(
+                          "relative flex rounded-md border border-black"
+                        )}
+                      >
+                        <Input
+                          placeholder="password..."
+                          {...field}
+                          className="outline-none"
+                          type={showPassword ? "text" : "password"}
+                        />
+                        <Button
+                          className="absolute right-1 bottom-2  text-gray-500 hover:text-gray-700 focus:outline-none bg-accent h-[0.5px] hover:bg-accent"
+                          type="button"
+                          onMouseDown={togglePasswordVisibilityOnMouseDown}
+                          onMouseUp={togglePasswordVisibilityOnMouseUp}
+                          onMouseLeave={togglePasswordVisibilityOnMouseUp}
+                        >
+                          {showPassword ? (
+                            <FaEye size={10} />
+                          ) : (
+                            <FaEyeSlash size={10} />
+                          )}
+                        </Button>
+                      </div>
                     </FormControl>
-
+                    <p className="text-xs text-gray-500 mt-1">
+                      Password must be at least 8 characters and contain at
+                      least one uppercase letter, one lowercase letter, one
+                      number, and one special character (!@#$%^&*).
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -176,14 +220,35 @@ const AuthForm = () => {
                   <FormItem className="mb-3 w-full">
                     <FormLabel>Confirm Password</FormLabel>
                     <FormControl>
-                      <Input
-                        placeholder="confirm password"
-                        {...field}
-                        className="border border-gray-700"
-                        type="password"
-                      />
+                      <div
+                        className={cn(
+                          "relative flex rounded-md border border-black"
+                        )}
+                      >
+                        <Input
+                          placeholder="confirm password"
+                          {...field}
+                          className="outline-none"
+                          type={showPassword ? "text" : "password"}
+                        />
+                        <Button
+                          className="absolute right-1 bottom-2  text-gray-500 hover:text-gray-700 focus:outline-none bg-accent h-[0.5px] hover:bg-accent"
+                          type="button"
+                          onMouseDown={togglePasswordVisibilityOnMouseDown}
+                          onMouseUp={togglePasswordVisibilityOnMouseUp}
+                          onMouseLeave={togglePasswordVisibilityOnMouseUp}
+                        >
+                          {showPassword ? (
+                            <FaEye size={10} />
+                          ) : (
+                            <FaEyeSlash size={10} />
+                          )}
+                        </Button>
+                      </div>
                     </FormControl>
-
+                    <p className="text-xs text-gray-500 mt-1">
+                      Must match the password entered above.
+                    </p>
                     <FormMessage />
                   </FormItem>
                 )}
