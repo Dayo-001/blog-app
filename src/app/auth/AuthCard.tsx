@@ -1,6 +1,5 @@
 "use client";
 import React, { useEffect, useRef } from "react";
-// import AuthForm from "./AuthForm";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -74,6 +73,7 @@ const AuthCard = () => {
       email: "",
       password: "",
     },
+    mode: "all",
   });
 
   const onSubmit = async (values: z.infer<typeof AuthFormSchema>) => {
@@ -229,7 +229,6 @@ const AuthCard = () => {
                 }
                 type="submit"
                 className="hover:cursor-pointer w-full"
-                // size="lg"
               >
                 {loading ? <Spinner className="animate-spin" /> : "Continue"}
               </Button>

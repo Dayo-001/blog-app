@@ -50,7 +50,7 @@ export default function NewPostPage() {
       slug: values.slug,
       content: values.content,
       published: values.published?.valueOf(),
-      tags: values.tags, // comma separated
+      tags: values.tags,
     };
 
     const res = await fetch("/api/posts", {

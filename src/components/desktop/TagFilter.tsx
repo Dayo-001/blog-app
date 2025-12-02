@@ -11,7 +11,7 @@ const TagFilter = ({
   onSelect: (tag: string | null) => void;
 }) => {
   return (
-    <div className="flex gap-2 flex-wrap mt-4">
+    <div className="flex gap-2 overflow-x-auto whitespace-nowrap mt-4 py-1 custom-scrollbar">
       <Button
         onClick={() => onSelect(null)}
         className={`px-3 py-1 rounded ${

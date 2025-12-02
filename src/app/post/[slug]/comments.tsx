@@ -14,6 +14,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
+import LiveTimeAgo from "@/src/components/desktop/LiveTimeAgo";
 
 type Comment = {
   id: string;
@@ -105,8 +106,8 @@ const Comments = ({
                 <div className="font-semibold text-gray-800">
                   {comment.author?.name ?? "Anonymous"}
                 </div>
-                <div className="text-xs text-gray-400">
-                  {new Date(comment.createdAt).toLocaleDateString()}
+                <div>
+                  <LiveTimeAgo date={comment.createdAt} />
                 </div>
               </div>
               <p className="text-gray-700 wrap-break-word">{comment.content}</p>

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/src/lib/prisma";
 import { PostCreateSchema } from "@/src/lib/use-create-post-validator";
-import { auth } from "@/src/lib/auth"; // better-auth instance
+import { auth } from "@/src/lib/auth";
 import { parseTags } from "@/src/lib/use-create-tag";
 
 export async function POST(request: NextRequest) {
