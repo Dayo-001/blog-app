@@ -2,10 +2,11 @@ export const dynamic = "force-dynamic";
 import React from "react";
 import { prisma } from "@/src/lib/prisma";
 import { notFound } from "next/navigation";
-import LikeButton from "./likeButton";
 import Comments from "./comments";
 import { authClient } from "@/src/lib/auth-client";
 import { headers } from "next/headers";
+import { formatDistanceToNow } from "date-fns";
+import LikeClientWrapper from "./LikeClientWrapper";
 
 const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
@@ -51,7 +52,7 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
             {post.author?.name ?? "Unknown"}
           </div>
           <div className="text-sm text-gray-400">
-            {new Date(post.createdAt).toLocaleDateString()}
+            {formatDistanceToNow(new Date(post.createdAt), { addSuffix: true })}
           </div>
         </div>
         <div className="flex flex-wrap gap-2 sm:ml-auto">
@@ -73,7 +74,7 @@ const PostPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
         {post.content}
       </p>
       <div className="mb-10">
-        <LikeButton postId={post.id} initialLikes={post.likes.length} />
+        <LikeClientWrapper postId={post.id} />
       </div>
 
       <Comments

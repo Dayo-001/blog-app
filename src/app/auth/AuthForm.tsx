@@ -20,7 +20,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { signUp } from "@/src/lib/auth-client"; //import the auth client
+import { signUp } from "@/src/lib/auth-client";
 import * as z from "zod";
 import { useRouter } from "next/navigation";
 import { FieldDescription } from "@/components/ui/field";
@@ -88,6 +88,7 @@ const AuthForm = () => {
       confirmPassword: "",
       name: "",
     },
+    mode: "all",
   });
 
   const onSubmit = async (values: z.infer<typeof AuthFormSchema>) => {
@@ -204,11 +205,7 @@ const AuthForm = () => {
                         </Button>
                       </div>
                     </FormControl>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Password must be at least 8 characters and contain at
-                      least one uppercase letter, one lowercase letter, one
-                      number, and one special character (!@#$%^&*).
-                    </p>
+
                     <FormMessage />
                   </FormItem>
                 )}
@@ -246,9 +243,7 @@ const AuthForm = () => {
                         </Button>
                       </div>
                     </FormControl>
-                    <p className="text-xs text-gray-500 mt-1">
-                      Must match the password entered above.
-                    </p>
+
                     <FormMessage />
                   </FormItem>
                 )}

@@ -18,7 +18,6 @@ type Props = {
 const PostCard = ({ title, slug, content, tags, likes, author }: Props) => {
   return (
     <div className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 flex gap-4 hover:shadow-md transition">
-      {/* Author Avatar */}
       <div className="shrink-0 flex flex-col items-center">
         <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl overflow-hidden mb-1">
           {author?.image ? (
@@ -38,7 +37,7 @@ const PostCard = ({ title, slug, content, tags, likes, author }: Props) => {
           {author?.name ?? "Unknown"}
         </span>
       </div>
-      {/* Main Content */}
+
       <div className="flex-1 min-w-0">
         <Link href={`/post/${slug}`}>
           <h2 className="text-xl font-bold text-blue-700 hover:underline">

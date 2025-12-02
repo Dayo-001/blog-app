@@ -3,13 +3,6 @@ import { prisma } from "@/src/lib/prisma";
 import { auth } from "@/src/lib/auth";
 import { CommentSchema } from "@/src/lib/use-create-post-validator";
 
-// type Params = {
-//   id: string;
-// };
-// type RouteContext = {
-//   params: Params;
-// };
-
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

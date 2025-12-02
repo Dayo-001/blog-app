@@ -2,13 +2,6 @@ import { prisma } from "@/src/lib/prisma";
 import { auth } from "@/src/lib/auth";
 import { NextRequest, NextResponse } from "next/server";
 
-// type Params = {
-//   id: string;
-// };
-// type RouteContext = {
-//   params: Params;
-// };
-
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

@@ -42,3 +42,11 @@ export async function DELETE(
   const count = await prisma.like.count({ where: { postId } });
   return NextResponse.json({ liked: false, count });
 }
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const { id: postId } = await params;
+  const count = await prisma.like.count({ where: { postId } });
+  return NextResponse.json({ count });
+}

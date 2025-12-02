@@ -7,9 +7,11 @@ import { useSession } from "../../hooks/sessionContext";
 const LikeButton = ({
   postId,
   initialLikes,
+  onLikeChange,
 }: {
   postId: string;
   initialLikes: number;
+  onLikeChange: () => void;
 }) => {
   const { user } = useSession();
   const [likes, setLikes] = useState(initialLikes);
@@ -22,7 +24,7 @@ const LikeButton = ({
         setLiked(false);
         return;
       }
-      const result = await fetch(`/api/posts/${postId}/is-liked`); // create a small endpoint
+      const result = await fetch(`/api/posts/${postId}/is-liked`);
       if (!result.ok) return;
       const data = await result.json();
       setLiked(!!data.liked);
@@ -43,9 +45,8 @@ const LikeButton = ({
       const data = await result.json();
       if (result.ok) {
         setLiked(true);
-        setLikes(data.likes);
+        setLikes(data.count);
       } else {
-        // already liked or error
         console.error(data);
       }
     } else {
@@ -55,10 +56,13 @@ const LikeButton = ({
       const data = await result.json();
       if (result.ok) {
         setLiked(false);
-        setLikes(data.likes);
+        setLikes(data.count);
       }
     }
     setLoading(false);
+    if (onLikeChange) {
+      onLikeChange();
+    }
   }
 
   return (
@@ -67,7 +71,11 @@ const LikeButton = ({
       disabled={loading}
       className="flex items-center gap-2 px-4 py-2 rounded-full bg-pink-100 hover:bg-pink-200 text-pink-700 font-semibold shadow transition-all duration-150 active:scale-95 hover:cursor-pointer"
     >
-      {liked ? <FaHeart className="w-5 h-5 text-pink-500 " /> : "♡ Like"}
+      <FaHeart
+        className={`w-5 h-5 transition-colors ${
+          liked ? "text-pink-500" : "text-gray-400"
+        }`}
+      />
       {likes}
     </Button>
   );
