@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { authClient, signOut } from "@/src/lib/auth-client";
 import { useRouter } from "next/navigation";
+import { startHolyLoader, stopHolyLoader } from "holy-loader";
 
 export type UserSession = {
   id: string;
@@ -35,6 +36,7 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
 
   async function fetchSession() {
     try {
+      startHolyLoader();
       const res = await authClient.getSession();
       if (res.data) {
         setUser(
@@ -46,14 +48,17 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         setUser(null);
       }
     } catch (error) {
+      stopHolyLoader();
       console.error("Error fetching session:", error);
     } finally {
+      stopHolyLoader();
       setLoading(false);
     }
   }
 
   async function logout() {
     try {
+      startHolyLoader();
       setLoading(true);
       const result = await signOut();
       if (result.error) {
@@ -63,15 +68,19 @@ export function SessionProvider({ children }: { children: React.ReactNode }) {
         router.push("/");
       }
     } catch (error) {
+      stopHolyLoader();
       console.error("Can not sign you out at this time", error);
     } finally {
+      stopHolyLoader();
       setLoading(false);
     }
   }
 
   async function refresh() {
+    startHolyLoader();
     setLoading(true);
     await fetchSession();
+    stopHolyLoader();
   }
 
   useEffect(() => {

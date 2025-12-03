@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { FaHeart } from "react-icons/fa6";
 import { useSession } from "../../hooks/sessionContext";
+import toast from "react-hot-toast";
 
 const LikeButton = ({
   postId,
@@ -34,7 +35,9 @@ const LikeButton = ({
 
   async function handleLike() {
     if (!user) {
-      alert("Log in to like");
+      toast.error("You must be logged in to like this post", {
+        duration: 4000,
+      });
       return;
     }
     setLoading(true);

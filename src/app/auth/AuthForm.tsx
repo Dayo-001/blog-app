@@ -28,6 +28,8 @@ import { Spinner } from "@/components/ui/spinner";
 import { useSession } from "../hooks/sessionContext";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { cn } from "@/lib/utils";
+import { toast } from "react-hot-toast";
+import { startHolyLoader, stopHolyLoader } from "holy-loader";
 
 const strongPasswordRegex = new RegExp(
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])(?=.{8,})/
@@ -96,6 +98,7 @@ const AuthForm = () => {
     setError("");
     console.log(values);
     try {
+      startHolyLoader();
       const result = await signUp.email({
         email: values.email,
         name: values.name,
@@ -105,11 +108,17 @@ const AuthForm = () => {
       if (result.error) {
         setError(result.error.message || "Sign up failed");
       } else {
+        toast.success(
+          "Account created successfully. Sign in with your login credentials",
+          { duration: 5000 }
+        );
         router.push("/login");
       }
     } catch (error) {
+      stopHolyLoader();
       console.error(error);
     } finally {
+      stopHolyLoader();
       setLoading(false);
     }
   };
@@ -123,7 +132,7 @@ const AuthForm = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-2 py-8">
-      <Card className="w-full max-w-xs sm:max-w-md md:max-w-lg bg-neutral-100 shadow-lg">
+      <Card className="w-[400px] bg-neutral-100 shadow-lg">
         <CardHeader>
           <CardTitle>Create an account</CardTitle>
           <CardDescription>

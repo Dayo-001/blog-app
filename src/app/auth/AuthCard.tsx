@@ -33,6 +33,7 @@ import { cn } from "@/lib/utils";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useSession } from "@/src/app/hooks/sessionContext";
+import { startHolyLoader, stopHolyLoader } from "holy-loader";
 
 const AuthFormSchema = z.object({
   email: z.email({
@@ -81,6 +82,7 @@ const AuthCard = () => {
     setError("");
     console.log(values);
     try {
+      startHolyLoader();
       const result = await signIn.email({
         email: values.email,
         password: values.password,
@@ -91,8 +93,10 @@ const AuthCard = () => {
         setError(result.error.message || "Sign in failed");
       }
     } catch (error) {
+      stopHolyLoader();
       console.error(error);
     } finally {
+      stopHolyLoader();
       setLoading(false);
     }
   };
@@ -100,6 +104,7 @@ const AuthCard = () => {
     setLoading(true);
     setError("");
     try {
+      startHolyLoader();
       const result = await signIn.social({
         provider: "google",
         callbackURL: callbackUrl,
@@ -110,8 +115,10 @@ const AuthCard = () => {
         setError(result.error.message || "Sign in failed");
       }
     } catch (error) {
+      stopHolyLoader();
       console.error(error);
     } finally {
+      stopHolyLoader();
       setLoading(false);
     }
   };
@@ -120,6 +127,7 @@ const AuthCard = () => {
     setLoading(true);
     setError("");
     try {
+      startHolyLoader();
       const result = await signIn.social({
         provider: "github",
         callbackURL: callbackUrl,
@@ -130,8 +138,10 @@ const AuthCard = () => {
         setError(result.error.message || "Sign in failed");
       }
     } catch (error) {
+      stopHolyLoader();
       console.error(error);
     } finally {
+      stopHolyLoader();
       setLoading(false);
     }
   };
