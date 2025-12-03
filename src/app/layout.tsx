@@ -3,6 +3,8 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/desktop/Navbar";
 import { SessionProvider } from "./hooks/sessionContext";
+import { Toaster } from "react-hot-toast";
+import HolyLoader from "holy-loader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,6 +32,13 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <SessionProvider>
+          <HolyLoader
+            color="#6292df"
+            height="0.3rem"
+            speed={250}
+            easing="linear"
+          />
+          <Toaster />
           <Navbar />
           <div className="p-6">{children}</div>
         </SessionProvider>
