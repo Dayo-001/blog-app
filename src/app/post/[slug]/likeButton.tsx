@@ -20,7 +20,7 @@ const LikeButton = ({
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    async function check() {
+    async function checkLiked() {
       if (!user) {
         setLiked(false);
         return;
@@ -30,14 +30,12 @@ const LikeButton = ({
       const data = await result.json();
       setLiked(!!data.liked);
     }
-    check();
+    checkLiked();
   }, [user, postId]);
 
   async function handleLike() {
     if (!user) {
-      toast.error("You must be logged in to like this post", {
-        duration: 4000,
-      });
+      toast.error("You must be logged in to like this post");
       return;
     }
     setLoading(true);

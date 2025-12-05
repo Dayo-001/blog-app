@@ -19,10 +19,15 @@ export async function POST(
   if (!post || post.authorId !== session.user.id) {
     return NextResponse.json({ error: "Not allowed" }, { status: 403 });
   }
-
+  await prisma.comment.deleteMany({
+    where: { postId: id },
+  });
+  await prisma.like.deleteMany({
+    where: { postId: id },
+  });
   await prisma.post.delete({
     where: { id },
   });
 
-  return NextResponse.redirect("/dashboard");
+  return NextResponse.redirect(new URL("/dashboard", request.url));
 }
