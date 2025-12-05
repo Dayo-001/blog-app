@@ -18,6 +18,7 @@ import { PostCreateInput } from "@/src/lib/use-create-post-validator";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import toast from "react-hot-toast";
 
 export default function NewPostPage() {
   const form = useForm<PostCreateInput>({
@@ -44,6 +45,7 @@ export default function NewPostPage() {
 
   const handleSubmit = async (values: PostCreateInput) => {
     setError("");
+    setMessage("");
 
     const payload = {
       title: values.title,
@@ -61,10 +63,11 @@ export default function NewPostPage() {
 
     const data = await res.json();
     if (!res.ok) {
+      toast.error("Failed to create post");
       setError(data.error || "Failed to create post");
       return;
     }
-
+    toast.success("Post created successfully!");
     setMessage("Post created!");
     router.push(`/post/${data.post.slug}`);
   };
@@ -171,9 +174,6 @@ export default function NewPostPage() {
           </div>
         </form>
       </Form>
-
-      {message && <p className="text-green-600 mt-3 text-center">{message}</p>}
-      {error && <p className="text-red-600 mt-3 text-center">{error}</p>}
     </div>
   );
 }
