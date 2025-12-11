@@ -22,6 +22,7 @@ export async function POST(
         content: input.content,
         post: { connect: { id } },
         author: { connect: { id: session.user.id } },
+        ...(body.parentId ? { parent: { connect: { id: body.parentId } } } : {}),
       },
       include: { author: { select: { id: true, email: true, name: true } } },
     });

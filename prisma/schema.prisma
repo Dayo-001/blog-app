@@ -99,13 +99,16 @@ model Tag {
 }
 
 model Comment {
-  id        String   @id @default(cuid())
-  content   String   @db.Text
-  post      Post     @relation(fields: [postId], references: [id])
+  id        String    @id @default(cuid())
+  content   String    @db.Text
+  post      Post      @relation(fields: [postId], references: [id])
   postId    String
-  author    User     @relation(fields: [authorId], references: [id])
+  author    User      @relation(fields: [authorId], references: [id])
   authorId  String
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  parentId  String?
+  parent    Comment?  @relation("CommentReplies", fields: [parentId], references: [id])
+  replies   Comment[] @relation("CommentReplies")
 }
 
 model Like {
