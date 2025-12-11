@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { prisma } from "@/src/lib/prisma";
 import { Button } from "@/components/ui/button";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { FcReading } from "react-icons/fc";
 
 export default async function DashboardPosts({ userId }: { userId: string }) {
   const posts = await prisma.post.findMany({
@@ -93,18 +96,20 @@ function PostRow({ post }: any) {
         </div>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+      <div className="flex flex-row items-center gap-3 w-full sm:w-auto justify-end">
         <Link
           href={`/dashboard/${post.slug}/edit`}
-          className="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 font-medium transition text-center"
+          className="p-2 text-black hover:text-blue-600 rounded-full bg-gray-50 hover:bg-gray-100 focus:outline-none w-10 h-10 flex items-center justify-center"
+          title="Edit post"
         >
-          Edit
+          <FaEdit className="w-6 h-6" />
         </Link>
         <Link
           href={`/post/${post.slug}`}
-          className="px-3 py-1 bg-gray-100 text-gray-700 rounded hover:bg-gray-200 font-medium transition text-center"
+          className="p-2 text-black hover:text-blue-600 rounded-full bg-gray-50 hover:bg-gray-100 focus:outline-none w-10 h-10 flex items-center justify-center"
+          title="View post"
         >
-          View
+          <FcReading className="w-6 h-6" />
         </Link>
         <form
           action={`/api/posts/${post.id}/delete`}
@@ -113,9 +118,10 @@ function PostRow({ post }: any) {
         >
           <Button
             type="submit"
-            className="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700 font-medium transition w-full sm:w-auto"
+            title="Delete post"
+            className="text-black hover:text-blue-600 p-2 rounded-full bg-gray-50 hover:bg-gray-100 hover:cursor-pointer focus:outline-none font-medium transition w-full sm:w-auto"
           >
-            Delete
+            <MdDelete className="w-6 h-6" />
           </Button>
         </form>
         <form
@@ -125,11 +131,12 @@ function PostRow({ post }: any) {
         >
           <Button
             type="submit"
-            className={`px-3 py-1 rounded font-medium transition w-full sm:w-auto ${
+            className={`px-3 py-1 rounded font-medium transition w-24 text-center whitespace-nowrap tabular-nums hover:cursor-pointer ${
               post.published
                 ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-200"
                 : "bg-blue-600 text-white hover:bg-blue-700"
             }`}
+            title="Publish or Unpublish post"
           >
             {post.published ? "Unpublish" : "Publish"}
           </Button>
