@@ -20,9 +20,10 @@ export default async function DashboardPosts({ userId }: { userId: string }) {
         </h1>
         <Link
           href="/dashboard/new"
-          className="px-4 sm:px-5 py-2 bg-blue-600 text-white rounded-full font-semibold shadow hover:bg-blue-700 transition text-base"
+          className="px-4 sm:px-5 py-2 bg-blue-600 text-white rounded-md font-semibold shadow hover:bg-blue-700 transition text-base"
+          title="Write a new post"
         >
-          + New Post
+          <FaEdit className="w-6 h-6" />
         </Link>
       </div>
 
@@ -99,7 +100,7 @@ function PostRow({ post }: any) {
       <div className="flex flex-row items-center gap-3 w-full sm:w-auto justify-end">
         <Link
           href={`/dashboard/${post.slug}/edit`}
-          className="p-2 text-black hover:text-blue-600 rounded-full bg-gray-50 hover:bg-gray-100 focus:outline-none w-10 h-10 flex items-center justify-center"
+          className="p-2 text-blue-500 hover:text-blue-600 rounded-full bg-gray-50 hover:bg-gray-100 focus:outline-none w-10 h-10 flex items-center justify-center"
           title="Edit post"
         >
           <FaEdit className="w-6 h-6" />
@@ -119,7 +120,7 @@ function PostRow({ post }: any) {
           <Button
             type="submit"
             title="Delete post"
-            className="text-black hover:text-blue-600 p-2 rounded-full bg-gray-50 hover:bg-gray-100 hover:cursor-pointer focus:outline-none font-medium transition w-full sm:w-auto"
+            className="text-red-500 hover:text-red-600 p-2 rounded-full bg-gray-50 hover:bg-gray-100 hover:cursor-pointer focus:outline-none font-medium transition w-full sm:w-auto"
           >
             <MdDelete className="w-6 h-6" />
           </Button>

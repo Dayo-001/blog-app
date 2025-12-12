@@ -123,7 +123,10 @@ const Comments = ({
 
         {comments
           .filter((c) => !c.parentId)
-          .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+          .sort(
+            (a, b) =>
+              new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+          )
           .map((top) => (
             <div key={top.id}>
               <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4 bg-white border border-gray-200 rounded-xl shadow-sm p-3 sm:p-4">
@@ -158,7 +161,7 @@ const Comments = ({
                   {currentUserId && top.author?.id === currentUserId && (
                     <Button
                       onClick={() => deleteComment(top.id)}
-                      className="mt-2 sm:mt-0 sm:ml-2 text-xs text-black hover:cursor-pointer p-1 rounded-full bg-transparent hover:bg-transparent focus:outline-none"
+                      className="mt-2 sm:mt-0 sm:ml-2 text-xs text-red-500 hover:text-red-600 hover:cursor-pointer p-1 rounded-full bg-gray-50 hover:bg-gray-100 focus:outline-none"
                       title="Delete comment"
                     >
                       <MdDelete className="w-4 h-4" />
@@ -170,7 +173,7 @@ const Comments = ({
                         setReplyingTo(top.id);
                         setReplyContent(`@${top.author?.name ?? "Anonymous"} `);
                       }}
-                      className="mt-2 sm:mt-0 sm:ml-2 text-xs text-black hover:cursor-pointer p-1 rounded-full bg-transparent hover:bg-transparent focus:outline-none"
+                      className="mt-2 sm:mt-0 sm:ml-2 text-xs text-blue-500 hover:text-blue-600 hover:cursor-pointer p-1 rounded-full bg-gray-50 hover:bg-gray-100 focus:outline-none"
                       title="Reply to comment"
                     >
                       <FaReply className="w-4 h-4" />
@@ -182,7 +185,11 @@ const Comments = ({
               <div className="ml-8 mt-3 space-y-3">
                 {comments
                   .filter((r) => r.parentId && findRootId(r) === top.id)
-                  .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+                  .sort(
+                    (a, b) =>
+                      new Date(a.createdAt).getTime() -
+                      new Date(b.createdAt).getTime()
+                  )
                   .map((reply) => (
                     <div
                       key={reply.id}
@@ -219,7 +226,7 @@ const Comments = ({
                       {currentUserId && reply.author?.id === currentUserId && (
                         <Button
                           onClick={() => deleteComment(reply.id)}
-                          className="mt-2 sm:mt-0 sm:ml-2 text-xs text-black hover:cursor-pointer p-1 rounded-full bg-transparent hover:bg-transparent focus:outline-none"
+                          className="mt-2 sm:mt-0 sm:ml-2 text-xs text-red-500 hover:text-red-600 hover:cursor-pointer p-1 rounded-full bg-gray-50 hover:bg-gray-100 focus:outline-none"
                           title="Delete comment"
                         >
                           <MdDelete className="w-4 h-4" />
@@ -233,7 +240,7 @@ const Comments = ({
                               `@${reply.author?.name ?? "Anonymous"} `
                             );
                           }}
-                          className="mt-2 sm:mt-0 sm:ml-2 text-xs text-black hover:cursor-pointer p-1 rounded-full bg-transparent hover:bg-transparent focus:outline-none"
+                          className="mt-2 sm:mt-0 sm:ml-2 text-xs text-blue-500 hover:text-blue-600 hover:cursor-pointer p-1 rounded-full bg-gray-50 hover:bg-gray-100 focus:outline-none"
                           title="Reply to comment"
                         >
                           <FaReply className="w-4 h-4" />

@@ -19,13 +19,16 @@ export default function Navbar() {
           <div className="h-12 w-12 sm:h-16 sm:w-16 rounded-full overflow-hidden flex items-center justify-center bg-white border border-gray-200 shadow-sm">
             <Image
               src="/images/logo.png"
-              alt="My Blog Logo"
+              alt="TechToniq Logo"
               width={56}
               height={56}
               className="object-cover h-full w-full"
               priority
             />
           </div>
+          <span className="ml-3 text-lg sm:text-2xl font-extrabold text-gray-900">
+            TechToniq
+          </span>
         </Link>
 
         <button
